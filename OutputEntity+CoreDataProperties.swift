@@ -17,12 +17,12 @@ extension OutputEntity {
     }
 
     @NSManaged public var color: Int32
-    @NSManaged public var consistency: String?
+    @NSManaged public var consistency: String
     @NSManaged public var id: UUID?
-    @NSManaged public var timestamp: Date?
+    @NSManaged public var timestamp: Date
 
 }
 
-extension OutputEntity : Identifiable {
+extension OutputEntity : Identifiable, Timestamped {
 
 }

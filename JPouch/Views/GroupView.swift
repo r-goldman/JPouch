@@ -15,11 +15,11 @@ struct GroupView: View {
         VStack(alignment: .leading) {
             Chart(bucket.items) {
                 PointMark(
-                    x: .value("Time", $0.timestamp!),
+                    x: .value("Time", $0.timestamp),
                     y: .value("Color", 1)
                 )
                 .foregroundStyle(Color(UIColor(rgb: $0.color)))
-                .symbol(by: .value("Consistency", $0.consistency!))
+                .symbol(by: .value("Consistency", $0.consistency))
             }
             .frame(height: 75)
             .chartXScale(domain: [
@@ -37,7 +37,7 @@ struct GroupView: View {
                         AddItemView(entity: item)
                     } label: {
                         VStack(alignment: .leading) {
-                            Text(item.timestamp?.formatted(date: .omitted, time: .shortened) ?? "nil")
+                            Text(item.timestamp.formatted(date: .omitted, time: .shortened))
                             
                         }
                     }

@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+protocol Timestamped {
+    var timestamp: Date { get }
+}

@@ -64,7 +64,7 @@ struct TrendView: View {
                 dateComponents = [.month, .year]
                 maxAge = Calendar.current.date(byAdding: .year, value: -1, to: Date())! // 1 year ago
         }
-        let filtered = items.filter({ $0.timestamp! > maxAge})
+        let filtered = items.filter({ $0.timestamp > maxAge})
         return DateUtility.groupBy(filtered, dateComponents: dateComponents)
     }
 }

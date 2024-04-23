@@ -20,8 +20,8 @@ struct AddItemView: View {
         if (entity != nil) {
             self.entity = entity
             self._colorValue = State(initialValue: Color(uiColor: UIColor(rgb: entity!.color)))
-            self._consistencyValue = State(initialValue: entity!.consistency ?? "paste")
-            self._timestamp = State(initialValue: entity!.timestamp ?? Date())
+            self._consistencyValue = State(initialValue: entity!.consistency )
+            self._timestamp = State(initialValue: entity!.timestamp)
         }
         else {
             self._colorValue = State(initialValue: Color(red: 88/255, green: 51/255, blue: 0))

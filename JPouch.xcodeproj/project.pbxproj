@@ -19,9 +19,9 @@
 		6CC520C02BD71360008A72A8 /* GroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC520BF2BD71360008A72A8 /* GroupView.swift */; };
 		6CF56E652BD7554F00298AC7 /* TrendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF56E642BD7554F00298AC7 /* TrendView.swift */; };
 		6CF56E682BD756F400298AC7 /* DateUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF56E672BD756F400298AC7 /* DateUtility.swift */; };
-		6CF56E6B2BD76E4800298AC7 /* OutputEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF56E692BD76E4800298AC7 /* OutputEntity+CoreDataClass.swift */; };
-		6CF56E6C2BD76E4800298AC7 /* OutputEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF56E6A2BD76E4800298AC7 /* OutputEntity+CoreDataProperties.swift */; };
 		6CF56E6E2BD76E7500298AC7 /* Timestamped.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF56E6D2BD76E7500298AC7 /* Timestamped.swift */; };
+		6CF56E712BD770A600298AC7 /* OutputEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF56E6F2BD770A600298AC7 /* OutputEntity+CoreDataClass.swift */; };
+		6CF56E722BD770A600298AC7 /* OutputEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF56E702BD770A600298AC7 /* OutputEntity+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,9 +38,9 @@
 		6CC520BF2BD71360008A72A8 /* GroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupView.swift; sourceTree = "<group>"; };
 		6CF56E642BD7554F00298AC7 /* TrendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendView.swift; sourceTree = "<group>"; };
 		6CF56E672BD756F400298AC7 /* DateUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtility.swift; sourceTree = "<group>"; };
-		6CF56E692BD76E4800298AC7 /* OutputEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OutputEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
-		6CF56E6A2BD76E4800298AC7 /* OutputEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OutputEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		6CF56E6D2BD76E7500298AC7 /* Timestamped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timestamped.swift; sourceTree = "<group>"; };
+		6CF56E6F2BD770A600298AC7 /* OutputEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OutputEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		6CF56E702BD770A600298AC7 /* OutputEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OutputEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,8 +57,8 @@
 		6C9F0CF12BD5AC9D00C9E1FA = {
 			isa = PBXGroup;
 			children = (
-				6CF56E692BD76E4800298AC7 /* OutputEntity+CoreDataClass.swift */,
-				6CF56E6A2BD76E4800298AC7 /* OutputEntity+CoreDataProperties.swift */,
+				6CF56E6F2BD770A600298AC7 /* OutputEntity+CoreDataClass.swift */,
+				6CF56E702BD770A600298AC7 /* OutputEntity+CoreDataProperties.swift */,
 				6C9F0CFC2BD5AC9D00C9E1FA /* JPouch */,
 				6C9F0CFB2BD5AC9D00C9E1FA /* Products */,
 			);
@@ -205,13 +205,13 @@
 				6CF56E682BD756F400298AC7 /* DateUtility.swift in Sources */,
 				6C9F0D0A2BD5AC9E00C9E1FA /* JPouch.xcdatamodeld in Sources */,
 				6CC520C02BD71360008A72A8 /* GroupView.swift in Sources */,
+				6CF56E712BD770A600298AC7 /* OutputEntity+CoreDataClass.swift in Sources */,
+				6CF56E722BD770A600298AC7 /* OutputEntity+CoreDataProperties.swift in Sources */,
 				6CF56E652BD7554F00298AC7 /* TrendView.swift in Sources */,
 				6C9F0D1A2BD5EFC300C9E1FA /* Color+Extension.swift in Sources */,
 				6C9F0D072BD5AC9E00C9E1FA /* Persistence.swift in Sources */,
 				6C9F0D002BD5AC9D00C9E1FA /* ContentView.swift in Sources */,
-				6CF56E6B2BD76E4800298AC7 /* OutputEntity+CoreDataClass.swift in Sources */,
 				6CF56E6E2BD76E7500298AC7 /* Timestamped.swift in Sources */,
-				6CF56E6C2BD76E4800298AC7 /* OutputEntity+CoreDataProperties.swift in Sources */,
 				6C9F0CFE2BD5AC9D00C9E1FA /* JPouchApp.swift in Sources */,
 				6C9F0D152BD5C64600C9E1FA /* Bucket.swift in Sources */,
 				6C9F0D122BD5AFD000C9E1FA /* AddItemView.swift in Sources */,
