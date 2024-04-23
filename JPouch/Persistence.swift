@@ -6,16 +6,22 @@
 //
 
 import CoreData
+import UIKit
 
 struct PersistenceController {
-    static let shared = PersistenceController()
+    static let instance = PersistenceController()
 
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
-        for _ in 0..<10 {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
+        let colors = [UIColor.brown.rgb, UIColor.black.rgb, UIColor.red.rgb]
+        let consistencies = ["paste", "slime", "liquid"]
+        for index in 0..<10 {
+            let newItem = OutputEntity(context: viewContext)
+            newItem.id = UUID()
+            newItem.color = colors[index % 3];
+            newItem.consistency = consistencies[index % 3]
+            newItem.timestamp = Date().advanced(by: Double(index * -60 * 60 * 6))
         }
         do {
             try viewContext.save()
@@ -30,7 +36,7 @@ struct PersistenceController {
 
     let container: NSPersistentContainer
 
-    init(inMemory: Bool = false) {
+    private init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "JPouch")
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
