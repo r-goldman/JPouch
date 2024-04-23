@@ -8,7 +8,14 @@
 import SwiftUI
 import Charts
 
+enum ChartMode: String {
+    case Daily = "daily"
+    case Weekly = "weekly"
+    case Monthly = "monthly"
+}
+
 struct TrendView: View {
+    @Environment(\.managedObjectContext) private var viewContext
     @FetchRequest(
         entity: OutputEntity.entity(),
         sortDescriptors: [
@@ -16,15 +23,49 @@ struct TrendView: View {
         ]
     )
     private var outputEntities: FetchedResults<OutputEntity>
+    @State private var chartMode: ChartMode = .Daily;
     
     var body: some View {
         VStack {
-            Text("Hello")
+            HStack {
+                Button("14 Days") { chartMode = .Daily}
+                    .foregroundColor(chartMode == .Daily ? .secondary : .accentColor)
+                Spacer()
+                Button("3 Months") { chartMode = .Weekly}
+                    .foregroundColor(chartMode == .Weekly ? .secondary : .accentColor)
+                Spacer()
+                Button("Year") { chartMode = .Monthly}
+                    .foregroundColor(chartMode == .Monthly ? .secondary : .accentColor)
+            }.padding()
+            Chart(group(outputEntities)) {
+                LineMark(
+                    x: .value("Date", $0.id),
+                    y: .value("Total", $0.items.count)
+                )
+                .interpolationMethod(.catmullRom)
+            }.padding()
         }
     }
     
-    private func groupBy(_ items: FetchedResults<OutputEntity>, dateComponents: Set<Calendar.Component>) -> [Bucket<Date, OutputEntity>] {
-        return DateUtility.groupBy(items, dateComponents: dateComponents)
+    private func group(_ items: FetchedResults<OutputEntity>) -> [Bucket<Date, OutputEntity>] {
+        let oneDayAgo = Double(-60 * 60 * 24)
+        let dateComponents: Set<Calendar.Component>
+        let maxAge: Date
+        switch chartMode {
+            case .Daily:
+                dateComponents = [.day, .month, .year]
+                maxAge = Date().advanced(by: oneDayAgo * 14) // 14 days ago
+                break
+            case .Weekly:
+                dateComponents = [.weekOfYear, .year]
+                maxAge = Date().advanced(by: oneDayAgo * 7 * 12) // 12 weeks ago
+                break
+            case .Monthly:
+                dateComponents = [.month, .year]
+                maxAge = Calendar.current.date(byAdding: .year, value: -1, to: Date())! // 1 year ago
+        }
+        let filtered = items.filter({ $0.timestamp! > maxAge})
+        return DateUtility.groupBy(filtered, dateComponents: dateComponents)
     }
 }
 

@@ -21,7 +21,7 @@ struct ContentView: View {
     
     @State private var showingTrends: Bool = false
     @State private var showingAddView: Bool = false
-
+    
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading) {
