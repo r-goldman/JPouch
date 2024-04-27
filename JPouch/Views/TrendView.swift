@@ -28,18 +28,15 @@ struct TrendView: View {
     var body: some View {
         VStack {
             HStack {
-                Button("14 Days") { chartMode = .Daily}
-                    .foregroundColor(chartMode == .Daily ? .secondary : .accentColor)
                 Spacer()
-                Button("3 Months") { chartMode = .Weekly}
-                    .foregroundColor(chartMode == .Weekly ? .secondary : .accentColor)
+                getModeButton("14 Days", value: .Daily)
+                getModeButton("3 Months", value: .Weekly)
+                getModeButton("Year", value: .Monthly)
                 Spacer()
-                Button("Year") { chartMode = .Monthly}
-                    .foregroundColor(chartMode == .Monthly ? .secondary : .accentColor)
-            }.padding()
+            }.padding(.top)
             Chart(group(outputEntities)) {
-                LineMark(
-                    x: .value("Date", $0.id),
+                BarMark(
+                    x: .value("Date", getBarLabel(bucket: $0)),
                     y: .value("Total", $0.items.count)
                 )
                 .interpolationMethod(.catmullRom)
@@ -66,6 +63,41 @@ struct TrendView: View {
         }
         let filtered = items.filter({ $0.timestamp > maxAge})
         return DateUtility.groupBy(filtered, dateComponents: dateComponents)
+    }
+    
+    private func getBarLabel(bucket: Bucket<Date, OutputEntity>) -> String {
+        let formatter = DateFormatter()
+        let first = bucket.items.first!.timestamp
+        switch chartMode {
+            case .Daily:
+                formatter.dateFormat = "MMM dd"
+                return formatter.string(from: first)
+            case .Weekly:
+                formatter.dateFormat = "MMM"
+                let month = formatter.string(from: first)
+                let last = bucket.items.last!.timestamp
+                formatter.dateFormat = "dd"
+                let start = formatter.string(from: first)
+                let end = formatter.string(from: last)
+                return "\(month) \(start)-\(end)"
+            case .Monthly:
+                formatter.dateFormat = "MMM"
+                return formatter.string(from: first)
+        }
+    }
+    
+    private func getModeButton(_ display: String, value: ChartMode) -> some View {
+        let style: any PrimitiveButtonStyle = chartMode == value ? .borderedProminent : .bordered
+        let btn = Button(
+            action: { chartMode = value },
+            label: {
+                Text(display).frame(maxWidth: .infinity)
+            }
+        )
+            .buttonStyle(style)
+        .frame(maxHeight: 30)
+        
+        return AnyView(btn)
     }
 }
 
