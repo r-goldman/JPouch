@@ -7,10 +7,10 @@
 
 import Foundation
 
-class Bucket<T, K>: Identifiable {
+class Bucket<T, K>: Identifiable, ObservableObject {
     let id: T
-    var items: [K]
-    
+    @Published var items: [K]
+
     init(id: T) {
         self.id = id
         self.items = []

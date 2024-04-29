@@ -10,7 +10,7 @@ import Charts
 
 struct GroupView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    var bucket: Bucket<Date, OutputEntity>
+    @ObservedObject var bucket: Bucket<Date, OutputEntity>
     var body: some View {
         VStack(alignment: .leading) {
             Chart(bucket.items) {
@@ -49,6 +49,7 @@ struct GroupView: View {
     private func deleteItem(at offsets: IndexSet) {
         offsets.map { bucket.items[$0] }.forEach(viewContext.delete)
         do {
+            bucket.objectWillChange.send()
             try viewContext.save()
         }
         catch {
@@ -62,7 +63,7 @@ struct GroupView: View {
     GroupView(bucket: {
         let viewContext = PersistenceController.preview.container.viewContext
         let colors = [UIColor.brown.rgb, UIColor.black.rgb, UIColor.red.rgb]
-        let consistencies = ["paste", "slime", "liquid"]
+        let consistencies = ["thick", "slimey", "watery"]
         let today = Calendar.current.startOfDay(for: Date())
         let bucket = Bucket<Date, OutputEntity>(id: today)
         for index in 1..<5 {
@@ -70,6 +71,7 @@ struct GroupView: View {
             newItem.id = UUID()
             newItem.color = colors[Int(index / 2)];
             newItem.consistency = consistencies[index % 3]
+            newItem.tags = "preview,tag #\(Int.random(in: 1...100))"
             newItem.timestamp = today.advanced(by: Double(index * -60 * 60 * 3))
             bucket.items.append(newItem)
         }

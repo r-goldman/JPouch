@@ -19,6 +19,7 @@ extension OutputEntity {
     @NSManaged public var color: Int32
     @NSManaged public var consistency: String
     @NSManaged public var id: UUID?
+    @NSManaged public var tags: String?
     @NSManaged public var timestamp: Date
 
 }

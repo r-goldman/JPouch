@@ -27,19 +27,19 @@ struct TrendView: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Spacer()
-                getModeButton("14 Days", value: .Daily)
-                getModeButton("3 Months", value: .Weekly)
-                getModeButton("Year", value: .Monthly)
-                Spacer()
-            }.padding(.top)
-            Chart(group(outputEntities)) {
+            Picker("Timescale", selection: $chartMode) {
+                Text("14 Days").tag(ChartMode.Daily)
+                Text("3 Months").tag(ChartMode.Weekly)
+                Text("Year").tag(ChartMode.Monthly)
+            }.pickerStyle(.segmented)
+            Chart(group(outputEntities)) { bucket in
                 BarMark(
-                    x: .value("Date", getBarLabel(bucket: $0)),
-                    y: .value("Total", $0.items.count)
+                    x: .value("Date", getBarLabel(bucket: bucket)),
+                    y: .value("Total", bucket.items.count)
                 )
-                .interpolationMethod(.catmullRom)
+                .annotation(position: .overlay, alignment: .center) {
+                    Text("\(bucket.items.count)").foregroundColor(.white)
+                }
             }.padding()
         }
     }
@@ -77,27 +77,13 @@ struct TrendView: View {
                 let month = formatter.string(from: first)
                 let last = bucket.items.last!.timestamp
                 formatter.dateFormat = "dd"
-                let start = formatter.string(from: first)
-                let end = formatter.string(from: last)
+                let end = formatter.string(from: first) // items are sorted desc
+                let start = formatter.string(from: last)
                 return "\(month) \(start)-\(end)"
             case .Monthly:
                 formatter.dateFormat = "MMM"
                 return formatter.string(from: first)
         }
-    }
-    
-    private func getModeButton(_ display: String, value: ChartMode) -> some View {
-        let style: any PrimitiveButtonStyle = chartMode == value ? .borderedProminent : .bordered
-        let btn = Button(
-            action: { chartMode = value },
-            label: {
-                Text(display).frame(maxWidth: .infinity)
-            }
-        )
-            .buttonStyle(style)
-        .frame(maxHeight: 30)
-        
-        return AnyView(btn)
     }
 }
 

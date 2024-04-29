@@ -19,33 +19,30 @@ struct ContentView: View {
     )
     private var outputEntities: FetchedResults<OutputEntity>
     
-    @State private var showingTrends: Bool = false
-    @State private var showingAddView: Bool = false
-    
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading) {
                 HStack {
-                    
-                    Button(action: {}, label: {
-                        NavigationLink(destination: TrendView()) {
-                            Label("Trends", systemImage: "chart.xyaxis.line")
-                        }
-                    })
-                    .frame(maxWidth: .infinity, maxHeight: 55)
-                    .background(Color.secondary)
-                    .foregroundColor(.white)
-                    .cornerRadius(9)
-                    
-                    Button(action: {
-                        showingAddView.toggle()
-                    }, label: {
-                        Label("New", systemImage: "plus.circle.fill")
-                    })
-                    .frame(maxWidth: .infinity, maxHeight: 55)
-                    .background(Color.accentColor)
-                    .foregroundColor(.white)
-                    .cornerRadius(9)
+                    HStack {
+                        headerBtn(
+                            Image(systemName: "chart.line.uptrend.xyaxis.circle")
+                                .resizable().scaledToFit().padding(10),
+                            color: Color.secondary,
+                            destination:  TrendView()
+                        )
+                        headerBtn(
+                            Image(systemName: "fork.knife.circle")
+                                .resizable().scaledToFit().padding(10),
+                            color: Color.brown,
+                            destination:  AddFoodView()
+                        )
+                    }
+                    headerBtn(
+                        Label("Log", systemImage: "plus.circle.fill")
+                            .font(Font.headline),
+                        color: Color.accentColor,
+                        destination:  AddItemView()
+                    )
                     
                 }.padding()
                 
@@ -63,15 +60,26 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("Pouch Log")
-            .sheet(isPresented: $showingAddView) {
-                AddItemView()
-            }
             .navigationViewStyle(.stack)
         }
     }
     
     private func groupBy(_ items: FetchedResults<OutputEntity>, dateComponents: Set<Calendar.Component>) -> [Bucket<Date, OutputEntity>] {
         return DateUtility.groupBy(items, dateComponents: dateComponents)
+    }
+    
+    private func headerBtn(_ label: some View, color: Color, destination: some View) -> some View {
+        let btn = Button(action: {}, label: {
+            NavigationLink(destination: destination) {
+                label
+            }
+        })
+        .frame(maxWidth: .infinity, maxHeight: 55)
+        .background(color)
+        .foregroundColor(.white)
+        .cornerRadius(9)
+        
+        return AnyView(btn);
     }
 }
 
