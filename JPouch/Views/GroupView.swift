@@ -30,11 +30,10 @@ struct GroupView: View {
             .chartYScale(domain: [0, 2])
             .padding()
             
-            
             List {
                 ForEach(bucket.items) { item in
                     NavigationLink {
-                        AddItemView(entity: item)
+                        AddItemView(entity: item).navigationTitle("Edit Item")
                     } label: {
                         VStack(alignment: .leading) {
                             Text(item.timestamp.formatted(date: .omitted, time: .shortened))

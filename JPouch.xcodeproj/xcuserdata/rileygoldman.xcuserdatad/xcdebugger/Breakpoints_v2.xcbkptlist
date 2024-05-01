@@ -3,23 +3,4 @@
    uuid = "BD2FCFE5-C848-488B-AAA3-59567C20C3E7"
    type = "1"
    version = "2.0">
-   <Breakpoints>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "0D30007F-8A58-49B6-8F0D-CD8234B88DB4"
-            shouldBeEnabled = "Yes"
-            nameForDebugger = "delete_error"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "JPouch/Views/GroupView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "56"
-            endingLineNumber = "56"
-            landmarkName = "deleteItem(at:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-   </Breakpoints>
 </Bucket>

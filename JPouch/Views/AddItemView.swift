@@ -18,6 +18,7 @@ let colorOptions = Array<Color>([
 
 struct AddItemView: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) private var dismiss
     
     @State private var entity: OutputEntity?
@@ -65,8 +66,7 @@ struct AddItemView: View {
                             label: {
                                 Circle()
                                     .fill(colorValue)
-                                    .stroke(Color.blue, lineWidth: 4)
-                                    .stroke(Color.white, lineWidth: 2)
+                                    .stroke(Color.blue, lineWidth: 2)
                                     .frame(width: 60, height: 40)
                             }
                         )

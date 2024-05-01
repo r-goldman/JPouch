@@ -28,20 +28,20 @@ struct ContentView: View {
                             Image(systemName: "chart.line.uptrend.xyaxis.circle")
                                 .resizable().scaledToFit().padding(10),
                             color: Color.secondary,
-                            destination:  TrendView()
+                            destination:  TrendView().navigationTitle("Trends")
                         )
                         headerBtn(
                             Image(systemName: "fork.knife.circle")
                                 .resizable().scaledToFit().padding(10),
                             color: Color.brown,
-                            destination:  AddFoodView()
+                            destination:  AddFoodView().navigationTitle("Add Food")
                         )
                     }
                     headerBtn(
                         Label("Log", systemImage: "plus.circle.fill")
                             .font(Font.headline),
                         color: Color.accentColor,
-                        destination:  AddItemView()
+                        destination:  AddItemView().navigationTitle("Add Item")
                     )
                     
                 }.padding()
@@ -50,6 +50,7 @@ struct ContentView: View {
                     ForEach(groupBy(outputEntities, dateComponents: [.day, .month, .year])) { bucket in
                         NavigationLink {
                             GroupView(bucket: bucket)
+                                .navigationTitle(bucket.id.formatted(date: .abbreviated, time: .omitted))
                         } label: {
                             VStack(alignment: .leading) {
                                 Text(bucket.id.formatted(date: .abbreviated, time: .omitted))
