@@ -10,10 +10,11 @@ import Charts
 
 struct GroupView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @ObservedObject var bucket: Bucket<Date, OutputEntity>
+    @State var bucket: Bucket<Date, OutputEntity>
+    
     var body: some View {
         VStack(alignment: .leading) {
-            Chart(bucket.items) {
+             Chart(bucket.items) {
                 PointMark(
                     x: .value("Time", $0.timestamp),
                     y: .value("Color", 1)
@@ -53,6 +54,7 @@ struct GroupView: View {
         }
         catch {
             let nsError = error as NSError
+            print(nsError.localizedDescription)
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
     }

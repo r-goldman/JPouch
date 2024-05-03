@@ -22,6 +22,8 @@ struct TagCount {
 
 struct TrendView: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.verticalSizeClass) var verticalSizeClass: UserInterfaceSizeClass?
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
     @FetchRequest(
         entity: OutputEntity.entity(),
         sortDescriptors: [
@@ -29,11 +31,23 @@ struct TrendView: View {
         ]
     )
     private var outputEntities: FetchedResults<OutputEntity>
+    
     @State private var timescale: Timescale = .Daily
     @State private var chartFilter: String? = nil
     @State private var presentPopup: Bool = false
     
     var body: some View {
+        if horizontalSizeClass == .compact && verticalSizeClass == .regular {
+            Text("Rotate")
+        }
+        else {
+            withAnimation {
+                mainContent
+            }
+        }
+    }
+    
+    var mainContent: some View {
         VStack {
             Picker("Timescale", selection: $timescale) {
                 Text("14 Days").tag(Timescale.Daily)

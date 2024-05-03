@@ -16,13 +16,13 @@ struct PersistenceController {
         let viewContext = result.container.viewContext
         let colors = [UIColor.brown.rgb, UIColor.black.rgb, UIColor.red.rgb]
         let consistencies = ["thick", "slimey", "watery"]
-        for index in 0..<25 {
+        for index in 0..<365 {
             let newItem = OutputEntity(context: viewContext)
             newItem.id = UUID()
             newItem.color = colors[index % 3];
             newItem.consistency = consistencies[index % 3]
-            newItem.tags = "preview,tag #\(Int.random(in: 1...10))"
-            newItem.timestamp = Date().advanced(by: Double(index * -60 * 60 * 6))
+            newItem.tags = "preview,tag #\(Int.random(in: 1...5))"
+            newItem.timestamp = Date().advanced(by: Double(index * -60 * 60 * 24))
         }
         do {
             try viewContext.save()

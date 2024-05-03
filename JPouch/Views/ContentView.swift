@@ -23,20 +23,11 @@ struct ContentView: View {
         NavigationStack {
             VStack(alignment: .leading) {
                 HStack {
-                    HStack {
-                        headerBtn(
-                            Image(systemName: "chart.line.uptrend.xyaxis.circle")
-                                .resizable().scaledToFit().padding(10),
-                            color: Color.secondary,
-                            destination:  TrendView().navigationTitle("Trends")
-                        )
-                        headerBtn(
-                            Image(systemName: "fork.knife.circle")
-                                .resizable().scaledToFit().padding(10),
-                            color: Color.brown,
-                            destination:  AddFoodView().navigationTitle("Add Food")
-                        )
-                    }
+                    headerBtn(
+                        Label("Trends", systemImage: "chart.line.uptrend.xyaxis"),
+                        color: Color.secondary,
+                        destination:  TrendView().navigationTitle("Trends")
+                    )
                     headerBtn(
                         Label("Log", systemImage: "plus.circle.fill")
                             .font(Font.headline),

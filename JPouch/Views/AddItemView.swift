@@ -29,22 +29,11 @@ struct AddItemView: View {
     @State private var tagViewHeight: CGFloat = 0
     
     init(entity: OutputEntity? = nil) {
-        if (entity != nil) {
-            let tags = Set<String>(entity?.tags?.components(separatedBy: ",") ?? [])
-            self._entity = State(initialValue: entity)
-            
-            self._colorValue = State(initialValue: Color(uiColor: UIColor(rgb: entity?.color ?? 0)))
-            self._consistencyValue = State(initialValue: entity?.consistency ?? "thick" )
-            self._tagsValue = State(initialValue: tags)
-            self._timestamp = State(initialValue: entity?.timestamp ?? Date())
-        }
-        else {
-            self._entity = State(initialValue: nil)
-            self._colorValue = State(initialValue: colorOptions[0])
-            self._consistencyValue = State(initialValue: "thick")
-            self._tagsValue = State(initialValue: Set<String>())
-            self._timestamp = State(initialValue: Date())
-        }
+        self.entity = entity
+        self.colorValue = entity != nil ? Color(uiColor: UIColor(rgb: entity!.color)) : colorOptions[0]
+        self.consistencyValue = entity?.consistency ?? "thick"
+        self.timestamp = entity?.timestamp ?? Date()
+        self.tagsValue = entity != nil ? Set(entity!.tags?.components(separatedBy: ",") ?? []) : Set()
     }
     
     var body: some View {
