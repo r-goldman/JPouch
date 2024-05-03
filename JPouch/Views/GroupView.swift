@@ -9,8 +9,7 @@ import SwiftUI
 import Charts
 
 struct GroupView: View {
-    @Environment(\.managedObjectContext) private var viewContext
-    @State var bucket: Bucket<Date, OutputEntity>
+    @Binding var bucket: Bucket<Date, OutputEntity>
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -32,12 +31,12 @@ struct GroupView: View {
             .padding()
             
             List {
-                ForEach(bucket.items) { item in
+                ForEach(bucket.items.indices, id: \.self) { i in
                     NavigationLink {
-                        AddItemView(entity: item).navigationTitle("Edit Item")
+                        AddItemView(entity: $bucket.items[i]).navigationTitle("Edit Item")
                     } label: {
                         VStack(alignment: .leading) {
-                            Text(item.timestamp.formatted(date: .omitted, time: .shortened))
+                            Text(bucket.items[i].timestamp.formatted(date: .omitted, time: .shortened))
                             
                         }
                     }
@@ -47,16 +46,9 @@ struct GroupView: View {
     }
     
     private func deleteItem(at offsets: IndexSet) {
-        offsets.map { bucket.items[$0] }.forEach(viewContext.delete)
-        do {
-            bucket.objectWillChange.send()
-            try viewContext.save()
-        }
-        catch {
-            let nsError = error as NSError
-            print(nsError.localizedDescription)
-            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-        }
+        let vm = OutputViewModel.shared
+        offsets.map { bucket.items[$0] }.forEach(vm.delete)
+        vm.save()
     }
 }
 
@@ -76,6 +68,6 @@ struct GroupView: View {
             newItem.timestamp = today.advanced(by: Double(index * -60 * 60 * 3))
             bucket.items.append(newItem)
         }
-        return bucket
-    }()).environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        return .constant(bucket)
+    }())
 }

@@ -9,15 +9,7 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) private var viewContext
-
-    @FetchRequest(
-        entity: OutputEntity.entity(),
-        sortDescriptors: [
-            NSSortDescriptor(keyPath: \OutputEntity.timestamp, ascending: false)
-        ]
-    )
-    private var outputEntities: FetchedResults<OutputEntity>
+    @StateObject var vm =  OutputViewModel.shared
     
     var body: some View {
         NavigationStack {
@@ -38,26 +30,23 @@ struct ContentView: View {
                 }.padding()
                 
                 List {
-                    ForEach(groupBy(outputEntities, dateComponents: [.day, .month, .year])) { bucket in
+                    ForEach(vm.data.indices, id: \.self) { i in
                         NavigationLink {
-                            GroupView(bucket: bucket)
-                                .navigationTitle(bucket.id.formatted(date: .abbreviated, time: .omitted))
+                            GroupView(bucket: $vm.data[i])
+                                .navigationTitle(vm.data[i].id.formatted(date: .abbreviated, time: .omitted))
                         } label: {
                             VStack(alignment: .leading) {
-                                Text(bucket.id.formatted(date: .abbreviated, time: .omitted))
-                                Text("Total \(bucket.items.count)").foregroundColor(.gray)
+                                Text(vm.data[i].id.formatted(date: .abbreviated, time: .omitted))
+                                Text("Total \(vm.data[i].items.count)").foregroundColor(.gray)
                             }
                         }
                     }
                 }
             }
             .navigationTitle("Pouch Log")
+            .navigationBarTitleDisplayMode(.inline)
             .navigationViewStyle(.stack)
         }
-    }
-    
-    private func groupBy(_ items: FetchedResults<OutputEntity>, dateComponents: Set<Calendar.Component>) -> [Bucket<Date, OutputEntity>] {
-        return DateUtility.groupBy(items, dateComponents: dateComponents)
     }
     
     private func headerBtn(_ label: some View, color: Color, destination: some View) -> some View {
@@ -77,5 +66,5 @@ struct ContentView: View {
 
 
 #Preview {
-    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    ContentView()
 }

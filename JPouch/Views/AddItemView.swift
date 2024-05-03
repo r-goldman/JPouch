@@ -17,23 +17,23 @@ let colorOptions = Array<Color>([
 ])
 
 struct AddItemView: View {
-    @Environment(\.managedObjectContext) private var viewContext
-    @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) private var dismiss
-    
-    @State private var entity: OutputEntity?
+        
+    var entity: Binding<OutputEntity>?
     @State private var colorValue: Color
     @State private var consistencyValue: String
     @State private var tagsValue: Set<String>
     @State private var timestamp: Date
     @State private var tagViewHeight: CGFloat = 0
     
-    init(entity: OutputEntity? = nil) {
+    init(entity: Binding<OutputEntity>? = nil) {
         self.entity = entity
-        self.colorValue = entity != nil ? Color(uiColor: UIColor(rgb: entity!.color)) : colorOptions[0]
-        self.consistencyValue = entity?.consistency ?? "thick"
-        self.timestamp = entity?.timestamp ?? Date()
-        self.tagsValue = entity != nil ? Set(entity!.tags?.components(separatedBy: ",") ?? []) : Set()
+        let entityVal = entity?.wrappedValue
+        
+        self.colorValue = entityVal != nil ? Color(uiColor: UIColor(rgb: entityVal!.color)) : colorOptions[0]
+        self.consistencyValue = entityVal?.consistency ?? "thick"
+        self.timestamp = entityVal?.timestamp ?? Date()
+        self.tagsValue = entityVal != nil ? Set(entityVal!.tags?.components(separatedBy: ",") ?? []) : Set()
     }
     
     var body: some View {
@@ -82,7 +82,7 @@ struct AddItemView: View {
                     HStack {
                         Spacer()
                         Button("Submit") {
-                            self.insert()
+                            self.upsert()
                         }
                         Spacer()
                     }
@@ -90,32 +90,14 @@ struct AddItemView: View {
         }
     }
     
-    private func insert() {
-        let data: OutputEntity
-        if (self.entity != nil) {
-            data = self.entity!
-        }
-        else {
-            data = OutputEntity(context: viewContext)
-            data.id = UUID()
-        }
-               
-        data.color = UIColor(colorValue).rgb
-        data.consistency = consistencyValue
-        data.tags = tagsValue.sorted(by:<).joined(separator: ",")
-        data.timestamp = timestamp
-        
-        do {
-            try viewContext.save()
-        }
-        catch {
-            let nsError = error as NSError
-            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-        }
+    private func upsert() {
+        let vm = OutputViewModel.shared
+        vm.upsert(entity: self.entity?.wrappedValue, color: colorValue, consistency: consistencyValue, timestamp: timestamp, tags: tagsValue)
+    
         dismiss()
     }
 }
 
 #Preview {
-    AddItemView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    AddItemView()
 }

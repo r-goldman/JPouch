@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6C1DD3702BE5498300ED6021 /* OutputViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1DD36F2BE5498300ED6021 /* OutputViewModel.swift */; };
 		6C9E98742BDFF69000C0F5E0 /* TagPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E98732BDFF69000C0F5E0 /* TagPicker.swift */; };
 		6C9F0CFE2BD5AC9D00C9E1FA /* JPouchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9F0CFD2BD5AC9D00C9E1FA /* JPouchApp.swift */; };
 		6C9F0D002BD5AC9D00C9E1FA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9F0CFF2BD5AC9D00C9E1FA /* ContentView.swift */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6C1DD36F2BE5498300ED6021 /* OutputViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputViewModel.swift; sourceTree = "<group>"; };
 		6C9E98732BDFF69000C0F5E0 /* TagPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagPicker.swift; sourceTree = "<group>"; };
 		6C9F0CFA2BD5AC9D00C9E1FA /* JPouch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JPouch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C9F0CFD2BD5AC9D00C9E1FA /* JPouchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JPouchApp.swift; sourceTree = "<group>"; };
@@ -56,6 +58,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6C1DD36E2BE5496900ED6021 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				6C1DD36F2BE5498300ED6021 /* OutputViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		6C9F0CF12BD5AC9D00C9E1FA = {
 			isa = PBXGroup;
 			children = (
@@ -80,6 +90,7 @@
 				6C9F0CFD2BD5AC9D00C9E1FA /* JPouchApp.swift */,
 				6C9F0D102BD5AF7000C9E1FA /* Views */,
 				6CF56E662BD756B400298AC7 /* Utility */,
+				6C1DD36E2BE5496900ED6021 /* ViewModels */,
 				6C9F0D132BD5C61D00C9E1FA /* Models */,
 				6C9F0D162BD5EF0600C9E1FA /* Extensions */,
 				6C9F0D012BD5AC9E00C9E1FA /* Assets.xcassets */,
@@ -222,6 +233,7 @@
 				6C9F0CFE2BD5AC9D00C9E1FA /* JPouchApp.swift in Sources */,
 				6C9F0D152BD5C64600C9E1FA /* Bucket.swift in Sources */,
 				6C9F0D122BD5AFD000C9E1FA /* AddItemView.swift in Sources */,
+				6C1DD3702BE5498300ED6021 /* OutputViewModel.swift in Sources */,
 				6C9E98742BDFF69000C0F5E0 /* TagPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

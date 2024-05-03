@@ -38,7 +38,18 @@ struct TrendView: View {
     
     var body: some View {
         if horizontalSizeClass == .compact && verticalSizeClass == .regular {
-            Text("Rotate")
+            VStack {
+                Image(systemName: "rectangle.landscape.rotate")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 100)
+                Text("Rotate Device").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+            }
+            .foregroundColor(.white)
+            .frame(maxWidth: 300, maxHeight: 300)
+            .background(Color.black.opacity(0.5))
+            .cornerRadius(20)
+            .padding()
         }
         else {
             withAnimation {
@@ -91,8 +102,8 @@ struct TrendView: View {
                                         Text(value).tag(value as String?)
                                     }
                                     Text("none").tag(nil as String?)
-                                }
-                                Button("Clear", action: { chartFilter = nil })
+                                }.onChange(of: chartFilter, { presentPopup = false })
+                                Button("Clear", action: { chartFilter = nil; presentPopup = false })
                             }
                         }
                         .frame(minWidth: 300, minHeight: 150)
