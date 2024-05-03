@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6C9E98722BDFF17900C0F5E0 /* AddFoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E98712BDFF17900C0F5E0 /* AddFoodView.swift */; };
 		6C9E98742BDFF69000C0F5E0 /* TagPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E98732BDFF69000C0F5E0 /* TagPicker.swift */; };
 		6C9F0CFE2BD5AC9D00C9E1FA /* JPouchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9F0CFD2BD5AC9D00C9E1FA /* JPouchApp.swift */; };
 		6C9F0D002BD5AC9D00C9E1FA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9F0CFF2BD5AC9D00C9E1FA /* ContentView.swift */; };
@@ -27,7 +26,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		6C9E98712BDFF17900C0F5E0 /* AddFoodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFoodView.swift; sourceTree = "<group>"; };
 		6C9E98732BDFF69000C0F5E0 /* TagPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagPicker.swift; sourceTree = "<group>"; };
 		6C9F0CFA2BD5AC9D00C9E1FA /* JPouch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JPouch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C9F0CFD2BD5AC9D00C9E1FA /* JPouchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JPouchApp.swift; sourceTree = "<group>"; };
@@ -107,7 +105,6 @@
 				6C9F0D112BD5AFD000C9E1FA /* AddItemView.swift */,
 				6CC520BF2BD71360008A72A8 /* GroupView.swift */,
 				6CF56E642BD7554F00298AC7 /* TrendView.swift */,
-				6C9E98712BDFF17900C0F5E0 /* AddFoodView.swift */,
 				6C9E98732BDFF69000C0F5E0 /* TagPicker.swift */,
 			);
 			path = Views;
@@ -218,7 +215,6 @@
 				6CF56E712BD770A600298AC7 /* OutputEntity+CoreDataClass.swift in Sources */,
 				6CF56E722BD770A600298AC7 /* OutputEntity+CoreDataProperties.swift in Sources */,
 				6CF56E652BD7554F00298AC7 /* TrendView.swift in Sources */,
-				6C9E98722BDFF17900C0F5E0 /* AddFoodView.swift in Sources */,
 				6C9F0D1A2BD5EFC300C9E1FA /* UIColor+RGB.swift in Sources */,
 				6C9F0D072BD5AC9E00C9E1FA /* Persistence.swift in Sources */,
 				6C9F0D002BD5AC9D00C9E1FA /* ContentView.swift in Sources */,
