@@ -9,7 +9,8 @@ import SwiftUI
 
 struct CalendarView: UIViewRepresentable {
     let interval: DateInterval
-    @Binding var selected: Bucket<Date, OutputEntity>
+    @ObservedObject var store: OutputStore
+    @Binding var selectedIndex: Int
     @Binding var displayGroupSheet: Bool
     
     func makeUIView(context: Context) -> some UICalendarView {
@@ -24,23 +25,27 @@ struct CalendarView: UIViewRepresentable {
     }
     
     func makeCoordinator() -> Coordinator {
-        Coordinator(selected: $selected, displayGroupSheet: $displayGroupSheet)
+        Coordinator(store: store, selectedIndex: $selectedIndex, displayGroupSheet: $displayGroupSheet)
     }
     
     func updateUIView(_ uiView: UIViewType, context: Context) {
-        let store = OutputStore.shared
         guard let modified = store.modified else { return }
         uiView.reloadDecorations(forDateComponents: modified, animated: true)
         store.modified = nil
     }
     
     class Coordinator: NSObject, UICalendarViewDelegate, UICalendarSelectionSingleDateDelegate {
-        @Binding var selected: Bucket<Date, OutputEntity>
+        @ObservedObject var store: OutputStore
+        @Binding var selectedIndex: Int
         @Binding var displayGroupSheet: Bool
-        @StateObject var store =  OutputStore.shared
         
-        init(selected: Binding<Bucket<Date, OutputEntity>>, displayGroupSheet: Binding<Bool>) {
-            self._selected = selected
+        init(
+            store:OutputStore,
+            selectedIndex: Binding<Int>,
+            displayGroupSheet: Binding<Bool>
+        ) {
+            self.store = store
+            self._selectedIndex = selectedIndex
             self._displayGroupSheet = displayGroupSheet
         }
         
@@ -49,10 +54,12 @@ struct CalendarView: UIViewRepresentable {
             _ calendarView: UICalendarView,
             decorationFor dateComponents: DateComponents) -> UICalendarView.Decoration?
         {
-            let bucket = store.data.filter({ $0.id == Calendar.current.date(from: dateComponents)})
-            if bucket.isEmpty { return nil }
+            let index = store.data.firstIndex(where: { $0.id == Calendar.current.date(from: dateComponents)})
             
-            let count = bucket.first?.items.count ?? 0
+            guard let index else { return nil }
+            let bucket = store.data[index]
+            
+            let count = bucket.items.count
             return .customView {
                 let icon = UILabel()
                 icon.text = "\(count)"
@@ -80,11 +87,12 @@ struct CalendarView: UIViewRepresentable {
                            didSelectDate dateComponents: DateComponents?) {
             guard dateComponents != nil else { return }
             
-            let bucket = store.data.filter {$0.id == dateComponents!.date}
-            if !bucket.isEmpty {
-                selected = bucket.first!
-                displayGroupSheet = true
-            }
+            let index = store.data.firstIndex(where: {$0.id == dateComponents!.date})
+            
+            guard let index else { return }
+        
+            selectedIndex = index
+            displayGroupSheet = true
         }
         
         func dateSelection(_ selection: UICalendarSelectionSingleDate,
@@ -107,7 +115,8 @@ struct CalendarView: UIViewRepresentable {
     }
     return CalendarView(
         interval: DateInterval.init(start: .distantPast, end: .distantFuture),
-        selected: .constant(bucket),
+        store: OutputStore.shared,
+        selectedIndex: .constant(0),
         displayGroupSheet: .constant(false)
     )
 }

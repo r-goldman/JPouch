@@ -9,19 +9,21 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
+    @ObservedObject var store = OutputStore.shared
     @State var displayGroupSheet: Bool = false
-    @State var selectedGroup: Bucket<Date, OutputEntity> = Bucket(id: Date()) // default non-nil value
+    @State var selectedIndex: Int = 0
     
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading) {
-                //ScrollView {
+                ScrollView {
                 CalendarView(
                         interval: DateInterval.init(start: .distantPast, end: .distantFuture),
-                        selected: $selectedGroup,
+                        store: store,
+                        selectedIndex: $selectedIndex,
                         displayGroupSheet: $displayGroupSheet
                     )
-                //}
+                }
                 HStack {
                     headerBtn(
                         Label("Log", systemImage: "plus.circle.fill")
@@ -37,11 +39,11 @@ struct ContentView: View {
             .navigationDestination(
                 isPresented: $displayGroupSheet,
                 destination: {
-                    GroupView(bucket: $selectedGroup)
-                        .navigationTitle(selectedGroup.id.formatted(date: .abbreviated, time: .omitted))
+                    GroupView(bucket: $store.data[selectedIndex])
+                        .navigationTitle(store.data[selectedIndex].id.formatted(date: .abbreviated, time: .omitted))
                         .toolbar {
                             ToolbarItem(placement: .navigationBarTrailing) {
-                                NavigationLink(destination: AddItemView(defaultDate: selectedGroup.id).navigationTitle("Add Item")) {
+                                NavigationLink(destination: AddItemView(defaultDate: getDefaultDate(store.data[selectedIndex].id)).navigationTitle("Add Item")) {
                                     Image(systemName: "plus.circle")
                                 }
                             }
@@ -54,11 +56,6 @@ struct ContentView: View {
                         Image(systemName: "chart.line.uptrend.xyaxis")
                     }
                 }
-//                ToolbarItem(placement: .navigationBarTrailing) {
-//                    NavigationLink(destination: AddItemView().navigationTitle("Add Item")) {
-//                        Image(systemName: "plus.circle")
-//                    }
-//                }
             }
         }
     }
@@ -74,6 +71,16 @@ struct ContentView: View {
         .cornerRadius(9)
         
         return AnyView(btn);
+    }
+    
+    private func getDefaultDate(_ calendarDay: Date) -> Date {
+        var components = Calendar.current.dateComponents([.day, .month, .year], from: calendarDay)
+        let currentTime = Calendar.current.dateComponents([.hour, .minute], from: Date())
+        components.hour = currentTime.hour
+        components.minute = currentTime.minute
+        
+        return Calendar.current.date(from: components)!
+        
     }
 }
 
