@@ -52,9 +52,7 @@ struct TrendView: View {
             .padding()
         }
         else {
-            withAnimation {
-                mainContent
-            }
+            mainContent
         }
     }
     

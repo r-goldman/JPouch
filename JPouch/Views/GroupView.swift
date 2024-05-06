@@ -46,7 +46,7 @@ struct GroupView: View {
     }
     
     private func deleteItem(at offsets: IndexSet) {
-        let vm = OutputViewModel.shared
+        let vm = OutputStore.shared
         offsets.map { bucket.items[$0] }.forEach(vm.delete)
         vm.save()
     }

@@ -26,13 +26,13 @@ struct AddItemView: View {
     @State private var timestamp: Date
     @State private var tagViewHeight: CGFloat = 0
     
-    init(entity: Binding<OutputEntity>? = nil) {
+    init(entity: Binding<OutputEntity>? = nil, defaultDate: Date = Date()) {
         self.entity = entity
         let entityVal = entity?.wrappedValue
         
         self.colorValue = entityVal != nil ? Color(uiColor: UIColor(rgb: entityVal!.color)) : colorOptions[0]
         self.consistencyValue = entityVal?.consistency ?? "thick"
-        self.timestamp = entityVal?.timestamp ?? Date()
+        self.timestamp = entityVal?.timestamp ?? defaultDate
         self.tagsValue = entityVal != nil ? Set(entityVal!.tags?.components(separatedBy: ",") ?? []) : Set()
     }
     
@@ -91,7 +91,7 @@ struct AddItemView: View {
     }
     
     private func upsert() {
-        let vm = OutputViewModel.shared
+        let vm = OutputStore.shared
         vm.upsert(entity: self.entity?.wrappedValue, color: colorValue, consistency: consistencyValue, timestamp: timestamp, tags: tagsValue)
     
         dismiss()

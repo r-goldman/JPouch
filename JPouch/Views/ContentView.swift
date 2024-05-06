@@ -9,43 +9,57 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-    @StateObject var vm =  OutputViewModel.shared
+    @State var displayGroupSheet: Bool = false
+    @State var selectedGroup: Bucket<Date, OutputEntity> = Bucket(id: Date()) // default non-nil value
     
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading) {
-                HStack {
-                    headerBtn(
-                        Label("Trends", systemImage: "chart.line.uptrend.xyaxis"),
-                        color: Color.secondary,
-                        destination:  TrendView().navigationTitle("Trends")
+                //ScrollView {
+                CalendarView(
+                        interval: DateInterval.init(start: .distantPast, end: .distantFuture),
+                        selected: $selectedGroup,
+                        displayGroupSheet: $displayGroupSheet
                     )
+                //}
+                HStack {
                     headerBtn(
                         Label("Log", systemImage: "plus.circle.fill")
                             .font(Font.headline),
                         color: Color.accentColor,
                         destination:  AddItemView().navigationTitle("Add Item")
                     )
-                    
                 }.padding()
-                
-                List {
-                    ForEach(vm.data.indices, id: \.self) { i in
-                        NavigationLink {
-                            GroupView(bucket: $vm.data[i])
-                                .navigationTitle(vm.data[i].id.formatted(date: .abbreviated, time: .omitted))
-                        } label: {
-                            VStack(alignment: .leading) {
-                                Text(vm.data[i].id.formatted(date: .abbreviated, time: .omitted))
-                                Text("Total \(vm.data[i].items.count)").foregroundColor(.gray)
-                            }
-                        }
-                    }
-                }
             }
             .navigationTitle("Pouch Log")
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitleDisplayMode(.large)
             .navigationViewStyle(.stack)
+            .navigationDestination(
+                isPresented: $displayGroupSheet,
+                destination: {
+                    GroupView(bucket: $selectedGroup)
+                        .navigationTitle(selectedGroup.id.formatted(date: .abbreviated, time: .omitted))
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                NavigationLink(destination: AddItemView(defaultDate: selectedGroup.id).navigationTitle("Add Item")) {
+                                    Image(systemName: "plus.circle")
+                                }
+                            }
+                        }
+                }
+            )
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    NavigationLink(destination: TrendView().navigationTitle("Trends").navigationBarTitleDisplayMode(.inline)) {
+                        Image(systemName: "chart.line.uptrend.xyaxis")
+                    }
+                }
+//                ToolbarItem(placement: .navigationBarTrailing) {
+//                    NavigationLink(destination: AddItemView().navigationTitle("Add Item")) {
+//                        Image(systemName: "plus.circle")
+//                    }
+//                }
+            }
         }
     }
     
@@ -53,9 +67,8 @@ struct ContentView: View {
         let btn = Button(action: {}, label: {
             NavigationLink(destination: destination) {
                 label
-            }
+            }.frame(maxWidth: .infinity, maxHeight: 55)
         })
-        .frame(maxWidth: .infinity, maxHeight: 55)
         .background(color)
         .foregroundColor(.white)
         .cornerRadius(9)
