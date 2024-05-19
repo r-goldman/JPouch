@@ -52,7 +52,11 @@ struct ContentView: View {
             )
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    NavigationLink(destination: TrendView().navigationTitle("Trends").navigationBarTitleDisplayMode(.inline)) {
+                    NavigationLink(destination:
+                            TrendView()
+                            .navigationTitle("Trends")
+                            .navigationBarTitleDisplayMode(.inline)
+                    ) {
                         Image(systemName: "chart.line.uptrend.xyaxis")
                     }
                 }

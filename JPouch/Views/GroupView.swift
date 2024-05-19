@@ -7,9 +7,16 @@
 
 import SwiftUI
 import Charts
+import HealthKit
 
 struct GroupView: View {
     @Binding var bucket: Bucket<Date, OutputEntity>
+    @State var nutrition: [HKQuantitySample] = []
+    
+    init(bucket: Binding<Bucket<Date, OutputEntity>>) {
+        self._bucket = bucket
+        self.getNutritionDetails(forIdentifier: .dietaryFiber)
+    }
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -49,6 +56,44 @@ struct GroupView: View {
         let vm = OutputStore.shared
         offsets.map { bucket.items[$0] }.forEach(vm.delete)
         vm.save()
+    }
+    
+    private func getNutritionDetails(forIdentifier: HKQuantityTypeIdentifier) {
+        let startOfDay = bucket.id
+        let sortDescriptor = NSSortDescriptor(
+            key: HKSampleSortIdentifierEndDate,
+            ascending: true
+        )
+        
+        let predicate = HKQuery.predicateForSamples(
+            withStart: startOfDay,
+            end: startOfDay.addingTimeInterval(60 * 60 * 24),
+            options: .strictStartDate
+        )
+        
+        let query = HKSampleQuery(
+            sampleType: HKQuantityType.quantityType(forIdentifier: forIdentifier)!,
+            predicate: predicate,
+            limit: Int(HKObjectQueryNoLimit),
+            sortDescriptors: [sortDescriptor]
+        ) { (query, results, error) in
+            guard let samples = results as? [HKQuantitySample] else {
+                // Handle any errors here.
+                print(error ?? "uknown err")
+                return
+            }
+            
+            nutrition.append(contentsOf: samples)
+            
+            // The results come back on an anonymous background queue.
+            // Dispatch to the main queue before modifying the UI.
+            DispatchQueue.main.async {
+                // Update the UI here.
+                print(nutrition)
+            }
+        }
+        
+        HKHealthStore().execute(query)
     }
 }
 

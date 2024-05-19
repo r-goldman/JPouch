@@ -42,8 +42,11 @@ class OutputStore: ObservableObject {
         }
         entityObj.color = UIColor(color).rgb
         entityObj.consistency = consistency
-        entityObj.tags = tags?.sorted(by:<).joined(separator: ",").lowercased()
         entityObj.timestamp = timestamp
+        
+        let tags = tags?.sorted(by:<).joined(separator: ",").lowercased()
+        entityObj.tags = tags?.isEmpty ?? true ? nil : tags
+        
         save()
         
         let newDate = Calendar.current.dateComponents([.day, .month, .year], from: timestamp)

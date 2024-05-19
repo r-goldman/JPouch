@@ -21,10 +21,14 @@ struct TagPicker: View {
                     .padding()
                     .textInputAutocapitalization(.never)
                     .textFieldStyle(.roundedBorder)
+                    .submitLabel(.done)
                     .onSubmit {
-                        selection.insert(customTag)
-                        values.insert(customTag)
-                        customTag = ""
+                        let trimmed = customTag.trimmingCharacters(in: .whitespacesAndNewlines)
+                        if !trimmed.isEmpty {
+                            selection.insert(trimmed)
+                            values.insert(trimmed)
+                            customTag = ""
+                        }
                     }
             }
         }

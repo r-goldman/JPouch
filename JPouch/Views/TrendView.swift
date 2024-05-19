@@ -35,7 +35,7 @@ struct TrendView: View {
     @State private var timescale: Timescale = .Daily
     @State private var chartFilter: String? = nil
     @State private var presentPopup: Bool = false
-    
+        
     var body: some View {
         if horizontalSizeClass == .compact && verticalSizeClass == .regular {
             VStack {

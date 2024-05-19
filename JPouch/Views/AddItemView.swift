@@ -33,7 +33,9 @@ struct AddItemView: View {
         self.colorValue = entityVal != nil ? Color(uiColor: UIColor(rgb: entityVal!.color)) : colorOptions[0]
         self.consistencyValue = entityVal?.consistency ?? "thick"
         self.timestamp = entityVal?.timestamp ?? defaultDate
-        self.tagsValue = entityVal != nil ? Set(entityVal!.tags?.components(separatedBy: ",") ?? []) : Set()
+        
+        let tagsArr = entityVal?.tags?.components(separatedBy: ",") ?? []
+        self.tagsValue = tagsArr.isEmpty ? Set() : Set(tagsArr)
     }
     
     var body: some View {
@@ -69,7 +71,7 @@ struct AddItemView: View {
             }
             Section(header: Text("Tags")) {
                 TagPicker(
-                    values: ["butt burn", "gassy", "undigested"],
+                    values: ["butt burn", "gassy", "overnight", "undigested"],
                     selection: $tagsValue,
                     height: $tagViewHeight
                 ).frame(minHeight: tagViewHeight)
