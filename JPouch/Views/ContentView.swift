@@ -11,7 +11,9 @@ import CoreData
 struct ContentView: View {
     @ObservedObject var store = OutputStore.shared
     @State var displayGroupSheet: Bool = false
+    @State var displayAddSheet: Bool = false
     @State var selectedIndex: Int = 0
+    @State var selectedDate: Date = Date()
     
     var body: some View {
         NavigationStack {
@@ -20,8 +22,10 @@ struct ContentView: View {
                 CalendarView(
                         interval: DateInterval.init(start: .distantPast, end: .distantFuture),
                         store: store,
+                        displayGroupSheet: $displayGroupSheet,
                         selectedIndex: $selectedIndex,
-                        displayGroupSheet: $displayGroupSheet
+                        displayAddSheet: $displayAddSheet,
+                        selectedDate: $selectedDate
                     )
                 }
                 HStack {
@@ -39,28 +43,36 @@ struct ContentView: View {
             .navigationDestination(
                 isPresented: $displayGroupSheet,
                 destination: {
-                    GroupView(bucket: $store.data[selectedIndex])
-                        .navigationTitle(store.data[selectedIndex].id.formatted(date: .abbreviated, time: .omitted))
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarTrailing) {
-                                NavigationLink(destination: AddItemView(defaultDate: getDefaultDate(store.data[selectedIndex].id)).navigationTitle("Add Item")) {
-                                    Image(systemName: "plus.circle")
-                                }
-                            }
-                        }
+                    getGroupView()
                 }
             )
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    NavigationLink(destination:
-                            TrendView()
-                            .navigationTitle("Trends")
-                            .navigationBarTitleDisplayMode(.inline)
-                    ) {
-                        Image(systemName: "chart.line.uptrend.xyaxis")
-                    }
+            .navigationDestination(
+                isPresented: $displayAddSheet,
+                destination: {
+                    AddItemView(defaultDate: selectedDate)
+                        .navigationTitle("Add Item")
                 }
-            }
+            )
+//            .toolbar {
+//                ToolbarItem(placement: .navigationBarLeading) {
+//                    NavigationLink(destination:
+//                                    InfoView()
+//                        .navigationTitle("Info")
+//                        .navigationBarTitleDisplayMode(.inline)
+//                    ) {
+//                        Image(systemName: "info.circle")
+//                    }
+//                }
+//                ToolbarItem(placement: .navigationBarTrailing) {
+//                    NavigationLink(destination:
+//                            TrendView()
+//                            .navigationTitle("Trends")
+//                            .navigationBarTitleDisplayMode(.inline)
+//                    ) {
+//                        Image(systemName: "chart.line.uptrend.xyaxis")
+//                    }
+//                }
+//            }
         }
     }
     
@@ -77,14 +89,26 @@ struct ContentView: View {
         return AnyView(btn);
     }
     
-    private func getDefaultDate(_ calendarDay: Date) -> Date {
-        var components = Calendar.current.dateComponents([.day, .month, .year], from: calendarDay)
-        let currentTime = Calendar.current.dateComponents([.hour, .minute], from: Date())
-        components.hour = currentTime.hour
-        components.minute = currentTime.minute
-        
-        return Calendar.current.date(from: components)!
-        
+    private func getGroupView() -> some View {
+        var view: any View
+        if store.data.isEmpty || selectedIndex >= store.data.count {
+            view = Text("No Data")
+        }
+        else {
+            view = GroupView(bucket: $store.data[selectedIndex])
+                .navigationTitle(store.data[selectedIndex].id.formatted(date: .abbreviated, time: .omitted))
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        NavigationLink(
+                            destination: AddItemView(defaultDate:store.data[selectedIndex].id)
+                                .navigationTitle("Add Item")
+                        ) {
+                            Image(systemName: "plus.circle")
+                        }
+                    }
+                }
+        }
+        return AnyView(view)
     }
 }
 

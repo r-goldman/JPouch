@@ -10,8 +10,10 @@ import SwiftUI
 struct CalendarView: UIViewRepresentable {
     let interval: DateInterval
     @ObservedObject var store: OutputStore
-    @Binding var selectedIndex: Int
     @Binding var displayGroupSheet: Bool
+    @Binding var selectedIndex: Int
+    @Binding var displayAddSheet: Bool
+    @Binding var selectedDate: Date
     
     func makeUIView(context: Context) -> some UICalendarView {
         let view = UICalendarView()
@@ -25,7 +27,13 @@ struct CalendarView: UIViewRepresentable {
     }
     
     func makeCoordinator() -> Coordinator {
-        Coordinator(store: store, selectedIndex: $selectedIndex, displayGroupSheet: $displayGroupSheet)
+        Coordinator(
+            store: store,
+            selectedIndex: $selectedIndex,
+            displayGroupSheet: $displayGroupSheet,
+            selectedDate: $selectedDate,
+            displayAddSheet: $displayAddSheet
+        )
     }
     
     func updateUIView(_ uiView: UIViewType, context: Context) {
@@ -38,15 +46,21 @@ struct CalendarView: UIViewRepresentable {
         @ObservedObject var store: OutputStore
         @Binding var selectedIndex: Int
         @Binding var displayGroupSheet: Bool
+        @Binding var displayAddSheet: Bool
+        @Binding var selectedDate: Date
         
         init(
             store:OutputStore,
             selectedIndex: Binding<Int>,
-            displayGroupSheet: Binding<Bool>
+            displayGroupSheet: Binding<Bool>,
+            selectedDate: Binding<Date>,
+            displayAddSheet: Binding<Bool>
         ) {
             self.store = store
             self._selectedIndex = selectedIndex
             self._displayGroupSheet = displayGroupSheet
+            self._selectedDate = selectedDate
+            self._displayAddSheet = displayAddSheet
         }
         
         @MainActor
@@ -89,7 +103,11 @@ struct CalendarView: UIViewRepresentable {
             
             let index = store.data.firstIndex(where: {$0.id == dateComponents!.date})
             
-            guard let index else { return }
+            guard let index else {
+                selectedDate = Calendar.current.date(from: dateComponents!)!
+                displayAddSheet = true
+                return
+            }
         
             selectedIndex = index
             displayGroupSheet = true
@@ -116,7 +134,9 @@ struct CalendarView: UIViewRepresentable {
     return CalendarView(
         interval: DateInterval.init(start: .distantPast, end: .distantFuture),
         store: OutputStore.shared,
+        displayGroupSheet: .constant(false),
         selectedIndex: .constant(0),
-        displayGroupSheet: .constant(false)
+        displayAddSheet: .constant(false),
+        selectedDate: .constant(Date())
     )
 }

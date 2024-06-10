@@ -11,12 +11,9 @@ import HealthKit
 
 struct GroupView: View {
     @Binding var bucket: Bucket<Date, OutputEntity>
-    @State var nutrition: [HKQuantitySample] = []
-    
-    init(bucket: Binding<Bucket<Date, OutputEntity>>) {
-        self._bucket = bucket
-        self.getNutritionDetails(forIdentifier: .dietaryFiber)
-    }
+    @State var meals: [Meal] = []
+    @State var showingDataList: Bool = false
+    @State var showingMealList: Bool = true
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -38,18 +35,26 @@ struct GroupView: View {
             .padding()
             
             List {
-                ForEach(bucket.items.indices, id: \.self) { i in
-                    NavigationLink {
-                        AddItemView(entity: $bucket.items[i]).navigationTitle("Edit Item")
-                    } label: {
-                        VStack(alignment: .leading) {
-                            Text(bucket.items[i].timestamp.formatted(date: .omitted, time: .shortened))
-                            
+                Section("Data", isExpanded: $showingDataList) {
+                    ForEach(bucket.items.indices, id: \.self) { i in
+                        NavigationLink {
+                            AddItemView(entity: $bucket.items[i]).navigationTitle("Edit Item")
+                        } label: {
+                            VStack(alignment: .leading) {
+                                Text(bucket.items[i].timestamp.formatted(date: .omitted, time: .shortened))
+                                
+                            }
                         }
+                    }.onDelete(perform: deleteItem)
+                }
+                Section("Meals", isExpanded: $showingMealList) {
+                    ForEach(meals, id: \.id) { meal in
+                        MealView(meal: meal)
                     }
-                }.onDelete(perform: deleteItem)
+                }
             }
-        }
+            .listStyle(.sidebar)
+        }.onAppear(perform: loadDietaryData)
     }
     
     private func deleteItem(at offsets: IndexSet) {
@@ -58,42 +63,24 @@ struct GroupView: View {
         vm.save()
     }
     
-    private func getNutritionDetails(forIdentifier: HKQuantityTypeIdentifier) {
-        let startOfDay = bucket.id
-        let sortDescriptor = NSSortDescriptor(
-            key: HKSampleSortIdentifierEndDate,
-            ascending: true
-        )
-        
-        let predicate = HKQuery.predicateForSamples(
-            withStart: startOfDay,
-            end: startOfDay.addingTimeInterval(60 * 60 * 24),
-            options: .strictStartDate
-        )
-        
-        let query = HKSampleQuery(
-            sampleType: HKQuantityType.quantityType(forIdentifier: forIdentifier)!,
-            predicate: predicate,
-            limit: Int(HKObjectQueryNoLimit),
-            sortDescriptors: [sortDescriptor]
-        ) { (query, results, error) in
-            guard let samples = results as? [HKQuantitySample] else {
-                // Handle any errors here.
-                print(error ?? "uknown err")
-                return
-            }
-            
-            nutrition.append(contentsOf: samples)
-            
-            // The results come back on an anonymous background queue.
-            // Dispatch to the main queue before modifying the UI.
-            DispatchQueue.main.async {
-                // Update the UI here.
-                print(nutrition)
+    private func loadDietaryData() {
+        HealthKitManager.shared.requestAuthorization { success, error in
+            if success {
+                let startDate = bucket.id
+                let endDate = bucket.id.advanced(by: 60
+                    * 60 * 24)
+                HealthKitManager.shared.fetchDietaryData(start: startDate, end: endDate) { samples, error in
+                    if let samples = samples {
+                        DispatchQueue.main.async {
+                            self.meals = Meal.fromSamples(samples)
+                        }
+                    }
+                }
+            } else {
+                // Handle errors appropriately in your app
+                print("HealthKit authorization failed: \(String(describing: error?.localizedDescription))")
             }
         }
-        
-        HKHealthStore().execute(query)
     }
 }
 

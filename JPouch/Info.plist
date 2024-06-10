@@ -2,9 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UISceneDelegateClassName</key>
-	<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
-	<key>UISceneConfigurationName</key>
-	<string>Default Configuration</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>We need access to your dietary data to display your intake chart.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>We need access to update your dietary data.</string>
 </dict>
 </plist>

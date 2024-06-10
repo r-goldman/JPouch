@@ -32,7 +32,13 @@ struct AddItemView: View {
         
         self.colorValue = entityVal != nil ? Color(uiColor: UIColor(rgb: entityVal!.color)) : colorOptions[0]
         self.consistencyValue = entityVal?.consistency ?? "thick"
-        self.timestamp = entityVal?.timestamp ?? defaultDate
+        
+        var components = Calendar.current.dateComponents([.day, .month, .year], from: defaultDate)
+        let currentTime = Calendar.current.dateComponents([.hour, .minute], from: Date())
+        components.hour = currentTime.hour
+        components.minute = currentTime.minute
+        
+        self.timestamp = entityVal?.timestamp ?? Calendar.current.date(from: components)!
         
         let tagsArr = entityVal?.tags?.components(separatedBy: ",") ?? []
         self.tagsValue = tagsArr.isEmpty ? Set() : Set(tagsArr)
