@@ -20,6 +20,7 @@ struct AddItemView: View {
     @Environment(\.dismiss) private var dismiss
         
     var entity: Binding<OutputEntity>?
+    var settings: SettingStore = SettingStore.shared
     @State private var colorValue: Color
     @State private var consistencyValue: String
     @State private var tagsValue: Set<String>
@@ -42,6 +43,8 @@ struct AddItemView: View {
         
         let tagsArr = entityVal?.tags?.components(separatedBy: ",") ?? []
         self.tagsValue = tagsArr.isEmpty ? Set() : Set(tagsArr)
+        
+        onTimeChange(Date(), self.timestamp)
     }
     
     var body: some View {
@@ -85,6 +88,7 @@ struct AddItemView: View {
             Section(header: Text("Time")) {
                 DatePicker("Time", selection: $timestamp)
                     .datePickerStyle(.compact)
+                    .onChange(of: timestamp, onTimeChange)
             }
             Section {
                     HStack {
@@ -103,6 +107,24 @@ struct AddItemView: View {
         vm.upsert(entity: self.entity?.wrappedValue, color: colorValue, consistency: consistencyValue, timestamp: timestamp, tags: tagsValue)
     
         dismiss()
+    }
+    
+    private func onTimeChange(_ oldValue: Date, _ newValue: Date) {
+        let newTime = getSeconds(from: newValue)
+        let sleepAt = getSeconds(from: settings.data.nightStart!)
+        let wakeAt = getSeconds(from: settings.data.nightEnd!)
+        
+        
+        if (sleepAt <= newTime || newTime <= wakeAt) {
+            tagsValue.insert("overnight")
+        }
+        else {
+            tagsValue.remove("overnight")
+        }
+    }
+    private func getSeconds(from: Date) -> Int {
+        let components = Calendar.current.dateComponents([.hour, .minute], from: from)
+        return (components.hour! * 3600) + (components.minute! * 60)
     }
 }
 

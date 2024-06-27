@@ -43,6 +43,7 @@ struct CalendarView: UIViewRepresentable {
     }
     
     class Coordinator: NSObject, UICalendarViewDelegate, UICalendarSelectionSingleDateDelegate {
+        @ObservedObject var settings: SettingStore = SettingStore.shared
         @ObservedObject var store: OutputStore
         @Binding var selectedIndex: Int
         @Binding var displayGroupSheet: Bool
@@ -83,13 +84,13 @@ struct CalendarView: UIViewRepresentable {
         }
         
         private func getTextColor(_ count: Int) -> UIColor {
-            if count >= 15 {
+            if count >= settings.data.redThreshold {
                 return .red
             }
-            else if count >= 10 {
+            else if count >= settings.data.orangeThreshold {
                 return .orange
             }
-            else if count >= 5 {
+            else if count >= settings.data.yellowThreshold {
                 return UIColor(Color.yellow)
             }
             else {

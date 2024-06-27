@@ -22,6 +22,9 @@
 		6C9F0D122BD5AFD000C9E1FA /* AddItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9F0D112BD5AFD000C9E1FA /* AddItemView.swift */; };
 		6C9F0D152BD5C64600C9E1FA /* Bucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9F0D142BD5C64600C9E1FA /* Bucket.swift */; };
 		6C9F0D1A2BD5EFC300C9E1FA /* UIColor+RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9F0D192BD5EFC300C9E1FA /* UIColor+RGB.swift */; };
+		6CA4D8E22C175907009FE5B4 /* SettingStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA4D8E12C175907009FE5B4 /* SettingStore.swift */; };
+		6CA4D8E52C177637009FE5B4 /* SettingEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA4D8E32C177637009FE5B4 /* SettingEntity+CoreDataClass.swift */; };
+		6CA4D8E62C177637009FE5B4 /* SettingEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA4D8E42C177637009FE5B4 /* SettingEntity+CoreDataProperties.swift */; };
 		6CC014CA2BFBCFF900CB54A8 /* Double+roundTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC014C92BFBCFF900CB54A8 /* Double+roundTo.swift */; };
 		6CC014CC2BFC2EC000CB54A8 /* MealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC014CB2BFC2EC000CB54A8 /* MealView.swift */; };
 		6CC520C02BD71360008A72A8 /* GroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC520BF2BD71360008A72A8 /* GroupView.swift */; };
@@ -51,6 +54,9 @@
 		6C9F0D112BD5AFD000C9E1FA /* AddItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemView.swift; sourceTree = "<group>"; };
 		6C9F0D142BD5C64600C9E1FA /* Bucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bucket.swift; sourceTree = "<group>"; };
 		6C9F0D192BD5EFC300C9E1FA /* UIColor+RGB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+RGB.swift"; sourceTree = "<group>"; };
+		6CA4D8E12C175907009FE5B4 /* SettingStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingStore.swift; sourceTree = "<group>"; };
+		6CA4D8E32C177637009FE5B4 /* SettingEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		6CA4D8E42C177637009FE5B4 /* SettingEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		6CC014C92BFBCFF900CB54A8 /* Double+roundTo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+roundTo.swift"; sourceTree = "<group>"; };
 		6CC014CB2BFC2EC000CB54A8 /* MealView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealView.swift; sourceTree = "<group>"; };
 		6CC520BF2BD71360008A72A8 /* GroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupView.swift; sourceTree = "<group>"; };
@@ -75,6 +81,8 @@
 		6C9F0CF12BD5AC9D00C9E1FA = {
 			isa = PBXGroup;
 			children = (
+				6CA4D8E32C177637009FE5B4 /* SettingEntity+CoreDataClass.swift */,
+				6CA4D8E42C177637009FE5B4 /* SettingEntity+CoreDataProperties.swift */,
 				6CF56E6F2BD770A600298AC7 /* OutputEntity+CoreDataClass.swift */,
 				6CF56E702BD770A600298AC7 /* OutputEntity+CoreDataProperties.swift */,
 				6C9F0CFC2BD5AC9D00C9E1FA /* JPouch */,
@@ -135,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				6C1DD36F2BE5498300ED6021 /* OutputStore.swift */,
+				6CA4D8E12C175907009FE5B4 /* SettingStore.swift */,
 				6C9F0D142BD5C64600C9E1FA /* Bucket.swift */,
 				6CF56E6D2BD76E7500298AC7 /* Timestamped.swift */,
 				6C003C3D2BFA9CB100192F24 /* HealthKitManager.swift */,
@@ -244,6 +253,8 @@
 				6C003C402BFA9D3000192F24 /* InfoView.swift in Sources */,
 				6CF56E652BD7554F00298AC7 /* TrendView.swift in Sources */,
 				6C9F0D1A2BD5EFC300C9E1FA /* UIColor+RGB.swift in Sources */,
+				6CA4D8E52C177637009FE5B4 /* SettingEntity+CoreDataClass.swift in Sources */,
+				6CA4D8E62C177637009FE5B4 /* SettingEntity+CoreDataProperties.swift in Sources */,
 				6C003C442BFAB90200192F24 /* Meal.swift in Sources */,
 				6C9F0D072BD5AC9E00C9E1FA /* Persistence.swift in Sources */,
 				6C9F0D002BD5AC9D00C9E1FA /* ContentView.swift in Sources */,
@@ -254,6 +265,7 @@
 				6CC014CC2BFC2EC000CB54A8 /* MealView.swift in Sources */,
 				6C9F0D122BD5AFD000C9E1FA /* AddItemView.swift in Sources */,
 				6C1DD3702BE5498300ED6021 /* OutputStore.swift in Sources */,
+				6CA4D8E22C175907009FE5B4 /* SettingStore.swift in Sources */,
 				6C9E98742BDFF69000C0F5E0 /* TagPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

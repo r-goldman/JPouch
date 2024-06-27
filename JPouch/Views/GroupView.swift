@@ -12,8 +12,8 @@ import HealthKit
 struct GroupView: View {
     @Binding var bucket: Bucket<Date, OutputEntity>
     @State var meals: [Meal] = []
-    @State var showingDataList: Bool = false
-    @State var showingMealList: Bool = true
+    @State var showingDataList: Bool = true
+    @State var showingMealList: Bool = false
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -33,7 +33,7 @@ struct GroupView: View {
             .chartYAxis(.hidden)
             .chartYScale(domain: [0, 2])
             .padding()
-            
+        
             List {
                 Section("Data", isExpanded: $showingDataList) {
                     ForEach(bucket.items.indices, id: \.self) { i in

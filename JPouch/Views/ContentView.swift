@@ -18,7 +18,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading) {
-                ScrollView {
+                //ScrollView {
                 CalendarView(
                         interval: DateInterval.init(start: .distantPast, end: .distantFuture),
                         store: store,
@@ -27,7 +27,7 @@ struct ContentView: View {
                         displayAddSheet: $displayAddSheet,
                         selectedDate: $selectedDate
                     )
-                }
+                //}
                 HStack {
                     headerBtn(
                         Label("Log", systemImage: "plus.circle.fill")
@@ -53,16 +53,16 @@ struct ContentView: View {
                         .navigationTitle("Add Item")
                 }
             )
-//            .toolbar {
-//                ToolbarItem(placement: .navigationBarLeading) {
-//                    NavigationLink(destination:
-//                                    InfoView()
-//                        .navigationTitle("Info")
-//                        .navigationBarTitleDisplayMode(.inline)
-//                    ) {
-//                        Image(systemName: "info.circle")
-//                    }
-//                }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    NavigationLink(destination:
+                                    InfoView()
+                        .navigationTitle("Settings")
+                        //.navigationBarTitleDisplayMode(.inline)
+                    ) {
+                        Image(systemName: "info.circle")
+                    }
+                }
 //                ToolbarItem(placement: .navigationBarTrailing) {
 //                    NavigationLink(destination:
 //                            TrendView()
@@ -72,7 +72,7 @@ struct ContentView: View {
 //                        Image(systemName: "chart.line.uptrend.xyaxis")
 //                    }
 //                }
-//            }
+            }
         }
     }
     

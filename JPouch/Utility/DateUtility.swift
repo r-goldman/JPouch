@@ -14,7 +14,7 @@ struct DateUtility {
             let components = Calendar.current.dateComponents(dateComponents, from: item.timestamp)
             let date = Calendar.current.date(from: components)!
             let existing = dict[date] ?? []
-            dict[date] = existing + [item]
+            dict[date] = [item] + existing
         }
         
         var bucketList: [Bucket<Date, T>] = [];

@@ -16,6 +16,7 @@ struct PersistenceController {
         let viewContext = result.container.viewContext
         let colors = [UIColor.brown.rgb, UIColor.black.rgb, UIColor.red.rgb]
         let consistencies = ["thick", "slimey", "watery"]
+        
         for index in 0..<25 {
             let newItem = OutputEntity(context: viewContext)
             newItem.id = UUID()
@@ -24,6 +25,22 @@ struct PersistenceController {
             newItem.tags = "preview,tag #\(Int.random(in: 1...5))"
             newItem.timestamp = Date().advanced(by: Double(index * -60 * 60 * Int.random(in: 2...8)))
         }
+        
+        var components = Calendar.current.dateComponents([.day, .month, .year, .hour, .minute], from: Date())
+        components.minute = 0
+        
+        let defaultSetting = SettingEntity(context: viewContext)
+        defaultSetting.redThreshold = 15
+        defaultSetting.orangeThreshold = 13
+        defaultSetting.yellowThreshold = 8
+        
+        components.hour = 7
+        defaultSetting.nightStart = Calendar.current.date(from: components)
+        
+        components.hour = 14
+        defaultSetting.nightEnd = Calendar.current.date(from: components)
+        
+        
         do {
             try viewContext.save()
         } catch {
